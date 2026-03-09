@@ -564,9 +564,18 @@ if 'corrected_final' in st.session_state:
             
             try:
            
-                ttl_start = pd.read_csv(arquivo_start, header=None).rename(
-                    columns={0: "h", 1: "min", 2: "s", 3: "ms"}
-                )
+                ttl_start = pd.read_csv(arquivo_start, header=None)
+
+                # validação do arquivo
+                if ttl_start.empty:
+                    st.error("Arquivo START está vazio.")
+                    st.stop()
+                
+                if ttl_start.shape[1] < 4:
+                    st.error("Arquivo START precisa ter 4 colunas: h, min, s, ms.")
+                    st.stop()
+                
+                ttl_start = ttl_start.rename(columns={0:"h",1:"min",2:"s",3:"ms"})
                 ttl_start['time(s)'] = (
                     ttl_start['h'] * 3600 +
                     ttl_start['min'] * 60 +
@@ -2849,4 +2858,3 @@ st.header("Encerrar Aplicativo (opcional)")
 if st.button("Fechar programa"):
     st.success("Encerrando...")
     os.kill(os.getpid(), signal.SIGTERM)
-
