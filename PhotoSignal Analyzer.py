@@ -220,7 +220,7 @@ if st.button("▶️ Executar regressão IRLS, ΔF/F e detecção S-G"):
             
             
             t = grab["time(s)"][:len(dFF)].values
-            signal_arr = dFF.values.copy()
+            
             dFF = (Grab_filtered - iso_fitt) / (iso_fitt + 1e-12)
             Z_scor = (dFF - np.nanmean(dFF)) / (
                 np.nanstd(dFF) if np.nanstd(dFF) != 0 else 1.0
