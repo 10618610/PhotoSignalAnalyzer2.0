@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import statsmodels.api as sm
 from scipy.signal import welch, butter, filtfilt, savgol_filter
 from scipy.ndimage import gaussian_filter1d
 import statsmodels.api as sm
@@ -210,6 +211,12 @@ if st.button("▶️ Executar regressão IRLS, ΔF/F e detecção S-G"):
             )
 
             iso_fitt = pd.Series(rlm_res.fittedvalues, index=Grab_filtered.index)
+
+            X = sm.add_constant(Isos_filtered)
+            model = sm.RLM(Grab_filtered, X)
+            res = model.fit()
+    
+            iso_fitt = res.predict(X)
             dFF = (Grab_filtered - iso_fitt) / (iso_fitt + 1e-12)
             Z_scor = (dFF - np.nanmean(dFF)) / (
                 np.nanstd(dFF) if np.nanstd(dFF) != 0 else 1.0
