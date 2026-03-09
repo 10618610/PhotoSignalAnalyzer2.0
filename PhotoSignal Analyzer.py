@@ -530,7 +530,7 @@ if st.session_state.pipeline_ok:
 # Apenas habilitar se o pipeline já foi executado e corrected_final disponível
 # -------------------------
 if 'corrected_final' in st.session_state:
-    x_corrected = st.session_state['corrected_final_z']
+    x_corrected = st.session_state['corrected_final']
     dff = pd.DataFrame({coluna_selecionada: x_corrected})
     dff['time'] = grab['time(s)'][:len(dff)].values
 
