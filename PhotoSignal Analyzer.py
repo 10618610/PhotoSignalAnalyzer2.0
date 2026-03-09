@@ -476,6 +476,11 @@ if st.session_state.pipeline_ok:
     corrected_final_z= (corrected_final - np.mean(corrected_final)) / (
     np.std(corrected_final) if np.std(corrected_final) != 0 else 1
     )
+    n_plot = min(len(t), len(Grab_filtered), len(iso_fitt))
+    
+    t_plot = t[:n_plot]
+    grab_plot = Grab_filtered.values[:n_plot]
+    iso_plot = iso_fitt.values[:n_plot]
     # ==================================================
     # FIGURA FINAL
     # ==================================================
