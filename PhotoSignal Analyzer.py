@@ -209,7 +209,7 @@ if st.button("▶️ Executar regressão IRLS, ΔF/F e detecção S-G"):
                 Isos_filtered.values
             )
 
-            iso_fitt = pd.Series(rlm_res.fittedvalues)
+            iso_fitt = pd.Series(rlm_res.fittedvalues, index=Grab_filtered.index)
             dFF = (Grab_filtered - iso_fitt) / (iso_fitt + 1e-12)
             Z_scor = (dFF - np.nanmean(dFF)) / (
                 np.nanstd(dFF) if np.nanstd(dFF) != 0 else 1.0
