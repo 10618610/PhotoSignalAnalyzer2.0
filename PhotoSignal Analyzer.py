@@ -473,7 +473,7 @@ if st.session_state.pipeline_ok:
         signal_arr, int(chosen_w), int(chosen_p)
     )
     corrected_final = signal_arr - baseline_final
-    corrected_final = (corrected_final - np.mean(corrected_final)) / (
+    corrected_final_z= (corrected_final - np.mean(corrected_final)) / (
     np.std(corrected_final) if np.std(corrected_final) != 0 else 1
     )
     # ==================================================
@@ -492,7 +492,7 @@ if st.session_state.pipeline_ok:
     axes[2].legend(fontsize=8)
 
     axes[3].plot(
-        t, corrected_final[: len(t)], label="Z-score (corrigido S-G)"
+        t, corrected_final_z[: len(t)], label="Z-score (corrigido S-G)"
     )
     axes[3].legend(fontsize=8)
 
@@ -501,7 +501,7 @@ if st.session_state.pipeline_ok:
     axes[0].set_ylabel("Amplitude")
 
     st.pyplot(fig)
-
+	corrected_final = corrected_final_z
     # ==================================================
     # DOWNLOAD
     # ==================================================
