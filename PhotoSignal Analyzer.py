@@ -521,7 +521,7 @@ if st.session_state.pipeline_ok:
     )
 
     # salvar resultado final
-    st.session_state.corrected_final = corrected_final_z
+    st.session_state.corrected_final = corrected_final
     st.success("Pipeline concluído. Resultado salvo na sessão.")
 
 
