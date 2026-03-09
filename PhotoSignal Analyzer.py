@@ -501,7 +501,7 @@ if st.session_state.pipeline_ok:
     axes[0].set_ylabel("Amplitude")
 
     st.pyplot(fig)
-	corrected_final = corrected_final_z
+	
     # ==================================================
     # DOWNLOAD
     # ==================================================
@@ -524,7 +524,7 @@ if st.session_state.pipeline_ok:
     )
 
     # salvar resultado final
-    st.session_state.corrected_final = corrected_final
+    st.session_state.corrected_final = corrected_final_z
     st.success("Pipeline concluído. Resultado salvo na sessão.")
 
 
@@ -533,7 +533,7 @@ if st.session_state.pipeline_ok:
 # Apenas habilitar se o pipeline já foi executado e corrected_final disponível
 # -------------------------
 if 'corrected_final' in st.session_state:
-    x_corrected = st.session_state['corrected_final']
+    x_corrected = st.session_state['corrected_final_z']
     dff = pd.DataFrame({coluna_selecionada: x_corrected})
     dff['time'] = grab['time(s)'][:len(dff)].values
 
