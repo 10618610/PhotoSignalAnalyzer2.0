@@ -206,17 +206,21 @@ if st.button("▶️ Executar regressão IRLS, ΔF/F e detecção S-G"):
             # IRLS
             # -----------------------------
             rlm_res = rodar_irls_cached(
-                Grab_filtered.values,
-                Isos_filtered.values
-            )
-
-            iso_fitt = pd.Series(rlm_res.fittedvalues, index=Grab_filtered.index)
-
+			    Grab_filtered.values,
+			    Isos_filtered.values
+			)
+			
+			
             X = sm.add_constant(Isos_filtered)
-            model = sm.RLM(Grab_filtered, X)
-            res = model.fit()
-    
-            iso_fitt = res.predict(X)
+            
+            iso_fitt = pd.Series(
+                rlm_res.predict(X),
+                index=Grab_filtered.index
+            )
+            
+            
+            t = grab["time(s)"][:len(dFF)].values
+            signal_arr = dFF.values.copy()
             dFF = (Grab_filtered - iso_fitt) / (iso_fitt + 1e-12)
             Z_scor = (dFF - np.nanmean(dFF)) / (
                 np.nanstd(dFF) if np.nanstd(dFF) != 0 else 1.0
