@@ -77,7 +77,6 @@ def lowpass_filter_cached(signal_arr, fs, f_cut, order=2):
     b, a = butter(N=order, Wn=f_cut/(fs/2), btype='low')
     return filtfilt(b, a, signal_arr)
 
-# -------------------------
 # Uploads e seleção de coluna
 # -------------------------
 st.subheader("1) Load Files.csv (GRAB e ISO)")
@@ -473,16 +472,9 @@ if st.session_state.pipeline_ok:
         signal_arr, int(chosen_w), int(chosen_p)
     )
     corrected_final = signal_arr - baseline_final
-    corrected_final_z= (corrected_final - np.mean(corrected_final)) / (
+    corrected_final = (corrected_final - np.mean(corrected_final)) / (
     np.std(corrected_final) if np.std(corrected_final) != 0 else 1
     )
-    n_plot = min(len(t), len(Grab_filtered), len(iso_fitt))
-    
-    t_plot = t[:n_plot]
-    grab_plot = Grab_filtered.values[:n_plot]
-    iso_plot = iso_fitt.values[:n_plot]
-    grab_z = (grab_filt - np.mean(grab_filt)) / np.std(grab_filt)
-    iso_z = (iso_fitt - np.mean(iso_fitt)) / np.std(iso_fitt)
     # ==================================================
     # FIGURA FINAL
     # ==================================================
@@ -499,7 +491,7 @@ if st.session_state.pipeline_ok:
     axes[2].legend(fontsize=8)
 
     axes[3].plot(
-        t, corrected_final_z[: len(t)], label="Z-score (corrigido S-G)"
+        t, corrected_final[: len(t)], label="Z-score (corrigido S-G)"
     )
     axes[3].legend(fontsize=8)
 
@@ -508,8 +500,6 @@ if st.session_state.pipeline_ok:
     axes[0].set_ylabel("Amplitude")
 
     st.pyplot(fig)
-	
-    # ==================================================
     # DOWNLOAD
     # ==================================================
     nome_arquivo = st.text_input(
