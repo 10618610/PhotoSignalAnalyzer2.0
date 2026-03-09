@@ -481,6 +481,8 @@ if st.session_state.pipeline_ok:
     t_plot = t[:n_plot]
     grab_plot = Grab_filtered.values[:n_plot]
     iso_plot = iso_fitt.values[:n_plot]
+    grab_z = (grab_filt - np.mean(grab_filt)) / np.std(grab_filt)
+    iso_z = (iso_fitt - np.mean(iso_fitt)) / np.std(iso_fitt)
     # ==================================================
     # FIGURA FINAL
     # ==================================================
