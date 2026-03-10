@@ -3,7 +3,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import statsmodels.api as sm
 from scipy.signal import welch, butter, filtfilt, savgol_filter
 from scipy.ndimage import gaussian_filter1d
 import statsmodels.api as sm
@@ -78,6 +77,7 @@ def lowpass_filter_cached(signal_arr, fs, f_cut, order=2):
     b, a = butter(N=order, Wn=f_cut/(fs/2), btype='low')
     return filtfilt(b, a, signal_arr)
 
+# -------------------------
 # Uploads e seleção de coluna
 # -------------------------
 st.subheader("1) Load Files.csv (GRAB e ISO)")
@@ -206,21 +206,11 @@ if st.button("▶️ Executar regressão IRLS, ΔF/F e detecção S-G"):
             # IRLS
             # -----------------------------
             rlm_res = rodar_irls_cached(
-			    Grab_filtered.values,
-			    Isos_filtered.values
-			)
-			
-			
-            X = sm.add_constant(Isos_filtered)
-            
-            iso_fitt = pd.Series(
-                rlm_res.predict(X),
-                index=Grab_filtered.index
+                Grab_filtered.values,
+                Isos_filtered.values
             )
-            
-            
-           
-            
+
+            iso_fitt = pd.Series(rlm_res.fittedvalues)
             dFF = (Grab_filtered - iso_fitt) / (iso_fitt + 1e-12)
             Z_scor = (dFF - np.nanmean(dFF)) / (
                 np.nanstd(dFF) if np.nanstd(dFF) != 0 else 1.0
@@ -511,6 +501,8 @@ if st.session_state.pipeline_ok:
     axes[0].set_ylabel("Amplitude")
 
     st.pyplot(fig)
+
+    # ==================================================
     # DOWNLOAD
     # ==================================================
     nome_arquivo = st.text_input(
